@@ -2,7 +2,7 @@
 ## Introduction
 Fridge manager app can help people to record food storage information in their fridge.
 
-You can click [this link]() to see a demo.
+You can click [this link](https://cryptic-ocean-77629.herokuapp.com/) to see a demo.
 
 ## User story
 ### Story one
