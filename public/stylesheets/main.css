@@ -1,8 +1,89 @@
-body{
-	background-image: url('/images/background.jpg');
-  background-size: cover;
+*{
+  box-sizing: border-box;
 }
-table, th, td {
-  border: 1px solid black;
+body{
 }
 
+.background{
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background-image: url('/images/background.jpg');
+  background-size: cover;
+}
+
+nav{
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+a:hover{
+  text-decoration: none;
+}
+
+.table{
+  margin: 0 auto;
+}
+.table td, .table th{
+  vertical-align:center;
+}
+
+.bigContainer{
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding-top: 100px;
+}
+
+.container{
+  width: auto;
+  background-color: white;
+  border-radius: 30px;
+  padding: 2% 5% 2% 5%;
+  box-shadow: 10px 10px 5px rgba(0,0,0,0.2);
+  margin-bottom: 5%;
+}
+
+.dashboard{
+  text-align: center;
+}
+
+form{
+  margin-top: 3%;
+}
+
+.btn-secondary{
+  background-color: #e842f4;
+}
+
+.btn-secondary:hover{
+  background-color: #c130cc;
+}
+
+.button-group{
+  display: flex;
+  flex-direction: column;
+  align-content: space-around;
+}
+
+.addFood{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.addFood input{
+  display: inline-block;
+}
+
+.container form{
+  text-align: center;
+}

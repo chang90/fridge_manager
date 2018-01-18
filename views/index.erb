@@ -1,65 +1,89 @@
-<h1>Whelcome to fridge management</h1>
+<div class="dashboard">
 <% if current_user %>
 	<h1>Hello, <%= current_user["username"] %></h1>
 	<h2>Here is your own fridge list</h2>
-	<table>
-	  <tr>
-	    <th>fridge_id</th>
-	    <th>fridge_name</th> 
-	    <th>fridge_location</th> 
-	    <th>share to others</th>
-	    <th>open the fridge</th>
-	    <th>remove the fridge</th>
-	  </tr>
-	  <% @own_fridge_detail_list.each{|fridge| %>
-	  <tr>
-	    <td><%= fridge.id %></td>
-	    <td><%= fridge.fridge_name %></td> 
-	    <td><%= fridge.fridge_location %></td> 
-	    <td>
-	    	<form action="/fridges/<%= fridge.id %>/share">
-					<button>share</button>
-				</form>
-	    </td>
-	    <td><a href="/fridges/<%= fridge.id %>">open</a></td> 
-	    <% if fridge_is_empty?(fridge.id)%>
-	    <td>
-	    	<form action="/delete_fridge/<%= fridge.id %>" method="post">
-					<input type="hidden" name="_method" value="delete">
-					<button>delete</button>
-				</form>
-			</td>
-			<% end %>
-	  </tr>
-		<% } %>
-
+	<a href="fridges/new">add new fridge</a>
+	<table class="table text-center">
+		<thead class="thead-light ">
+		  <tr>
+		    <th scope="col">fridge id</th>
+		    <th scope="col">fridge name</th> 
+		    <th scope="col">fridge location</th> 
+		    <th scope="col">share to others</th>
+		    <th scope="col">open the fridge</th>
+		    <th scope="col">remove the fridge</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <% @own_fridge_detail_list.each{|fridge| %>
+		  <tr>
+		    <th scope="row"><%= fridge.id %></th>
+		    <td><%= fridge.fridge_name %></td> 
+		    <td><%= fridge.fridge_location %></td> 
+		    <td>
+		    	<form action="/fridges/<%= fridge.id %>/share">
+						<button class="btn btn btn-success">share</button>
+					</form>
+		    </td>
+		    <td><a href="/fridges/<%= fridge.id %>"><button class="btn btn-primary">open</button></a></td> 
+		    <% if fridge_is_empty?(fridge.id)%>
+		    <td>
+		    	<form action="/delete_fridge/<%= fridge.id %>" method="post">
+						<input type="hidden" name="_method" value="delete">
+						<button class="btn btn btn-warning">delete</button>
+					</form>
+				</td>
+				<% else%>
+				 <td>
+					<button class="btn btn-outline-dark" disabled>delete</button>
+				</td>
+				<% end %>
+		  </tr>
+			<% } %>
+		</tbody>
 	</table>
-	<a href="fridges/new">add fridge</a>
 
-		<h2>Here is your share fridge list</h2>
-	<table>
-	  <tr>
-	    <th>fridge_id</th>
-	    <th>fridge_name</th> 
-	    <th>fridge_location</th> 
-	    <th>open the fridge</th>
-	  </tr>
-	  <% @share_fridge_detail_list.each{|fridge| %>
-	  <tr>
-	    <td><%= fridge.id %></td>
-	    <td><%= fridge.fridge_name %></td> 
-	    <td><%= fridge.fridge_location %></td> 
-	    <td><a href="/fridges/<%= fridge.id %>">open</a></td> 
-	  </tr>
-		<% } %>
 
+	<h2>Here is your share fridge list</h2>
+	<table class="table">
+		<thead class="thead-light ">
+		  <tr>
+		    <th scope="col">fridge_id</th>
+		    <th scope="col">fridge_name</th> 
+		    <th scope="col">fridge_location</th> 
+		    <th scope="col">open the fridge</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <% @share_fridge_detail_list.each{|fridge| %>
+		  <tr>
+		    <td scope="col"><%= fridge.id %></td>
+		    <td><%= fridge.fridge_name %></td> 
+		    <td><%= fridge.fridge_location %></td> 
+		    <td><a href="/fridges/<%= fridge.id %>"><button class="btn btn-primary">open</button></a></td> 
+		  </tr>
+			<% } %>
+		</tbody>
 	</table>
 
 <% else %>
+	<h3>Hi, I am fridge managemer</h3>
+	<p>Please signin to use me</p>
 	<form action="/session" method="POST">
-		<p>EMAIL: <input type="text" name="email"></p>
-		<p>PASSWORD: <input type="password" name="password"></p>
-		<button>LOGIN</button>
-		<a href="/users/new">SIGNUP</a>
+		<div class="form-group">
+	    <label for="exampleInputEmail1">Email address</label>
+	    <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+	    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+	  </div>
+		<div class="form-group">
+	    <label for="exampleInputPassword1">Password</label>
+	    <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+	  </div>
+	  <div class="button-group">
+			<button class="btn btn-secondary">LOGIN</button>
+			<a href="/users/new">No account? <span class="text-warning">SIGNUP!</span></a> 	
+	  </div>
 	</form>
 <% end %>
+
+</div>

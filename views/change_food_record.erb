@@ -1,4 +1,5 @@
 <br/>
+<h3 class="text-center">Change food record</h3>
 <form action="/change_food_record/<%= @single_record.id %>" method="post" id="change_food_name">
 	Item name : <select name="goods_id" form="change_food_name">
 		<% @goods_information.each {|food| %>
@@ -15,7 +16,7 @@
 	<input type="hidden" name="user_id" value=<%= current_user.id %>>
 	<input type="hidden" name="fridge_id" value=<%= @fridge_id %>>
 	goods_expire_date:<input type="date" name="goods_expire_date" value=<%= @single_record.goods_expire_date %>></br></br>
-	goods_quantity:<input type="text" name="goods_quantity" value=<%= @single_record.goods_quantity %>></br>
+	goods_quantity:<input type="text" name="goods_quantity" value=<%= @single_record.goods_quantity %>></br></br>
 
-	<button>input</button>
+	<button class="btn btn-secondary">input</button>
 </form>

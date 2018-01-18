@@ -1,51 +1,62 @@
 <h1>No.<%= @fridge_id %> fridge food list</h1>
-<table>
-	<tr>
-    <th>food_id</th>
-    <th>owner</th> 
-    <th>goods name</th> 
-    <th>goods_expire_date</th>
-    <th>goods_quantity</th>
-  </tr>
-<% @record_list.each{|record| %>
-	<tr>
-	  <td><%= record.id %></td>
-	  <td><%= record.user_id %></td> 
-	  <td><%= @goods_information[record.goods_id.to_i-1].goods_name %></td> 
-	  <td><%= record.goods_expire_date %></td> 
-	  <td><%= record.goods_quantity %></td> 
+<table class="table text-center">
+	<thead class="thead-light ">
+		<tr>
+	    <th scope="col">food_id</th>
+	    <th scope="col">owner</th> 
+	    <th scope="col">food name</th> 
+	    <th scope="col">food expire date</th>
+	    <th scope="col">food quantity</th>
+	    <th scope="col">eat</th>
+	    <th scope="col">change</th>
+	  </tr>
+	</thead>
+	<tbody>
+	<% @record_list.each{|record| %>
+		<tr>
+		  <td><%= record.id %></td>
+		  <td><%= record.user_id %></td> 
+		  <td><%= @goods_information[record.goods_id.to_i-1].goods_name %></td> 
+		  <td><%= record.goods_expire_date %></td> 
+		  <td><%= record.goods_quantity %></td> 
 
-	  <% if goods_owner?(current_user.id,record.id) %>
-	  <td>
-			<form action="/delete_food_record/<%= record.id %>" method="post">
-				<input type="hidden" name="_method" value="delete">
-				<input type="hidden" name="fridge_id" value=<%= @fridge_id %>>
-				<button>eat them all</button>
-			</form>
-	  </td>
-	  <td>
-			<form action="/change_food_record/<%= record.id %>" method="get">
-				<!-- <input type="hidden" name="_method" value="put"> -->
-				<input type="hidden" name="fridge_id" value=<%= @fridge_id %>>
-				<button>change</button>
-			</form>
-	  </td>
-	  <% end %>
-	</tr>
-<% } %>
+		  <% if goods_owner?(current_user.id,record.id) %>
+		  <td>
+				<form action="/delete_food_record/<%= record.id %>" method="post">
+					<input type="hidden" name="_method" value="delete">
+					<input type="hidden" name="fridge_id" value=<%= @fridge_id %>>
+					<button class="btn btn-danger">eat them all</button>
+				</form>
+		  </td>
+		  <td>
+				<form action="/change_food_record/<%= record.id %>" method="get">
+					<!-- <input type="hidden" name="_method" value="put"> -->
+					<input type="hidden" name="fridge_id" value=<%= @fridge_id %>>
+					<button class="btn btn-success">change</button>
+				</form>
+		  </td>
+		  <% end %>
+		</tr>
+	<% } %>
+	</tbody>
 </table>
 </br>
-<label>add new food item</label></br></br>
-<select name="goods_id" form="input_new_food" >
-	<% @goods_information.each {|food| %>
-	<option value =<%=food.id %>><%= food.goods_name %></option>
-	<% } %>
-</select>
-<form action="/add_food_item" method="post" id="input_new_food">
-	<input type="hidden" name="user_id" value=<%= current_user.id %>>
-	<input type="hidden" name="fridge_id" value=<%= @fridge_id %>>
-	goods_expire_date:<input type="date" name="goods_expire_date"></br></br>
-	goods_quantity:<input type="text" name="goods_quantity"></br>
+<div class="container addFood">
+	<h3>add new food item</h3>
+	<form action="/add_food_item" method="post" id="input_new_food">
+		<label>food name:</label>
+		<select name="goods_id" form="input_new_food" >
+			<% @goods_information.each {|food| %>
+			<option value =<%=food.id %>><%= food.goods_name %></option>
+			<% } %>
+		</select>
+		<input type="hidden" name="user_id" value=<%= current_user.id %>>
+		<input type="hidden" name="fridge_id" value=<%= @fridge_id %>>
+		<label>food expire date:</label>
+	  <input type="date" name="goods_expire_date"></br></br>
+		<label>food quantity:</label>
+		<input type="text" name="goods_quantity"></br>
 
-	<button>input</button>
-</form>
+		<button class="btn btn-success">input</button>
+	</form>
+</div>
