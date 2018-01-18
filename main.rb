@@ -1,6 +1,6 @@
 require 'sinatra'
 # require 'sinatra/reloader'
-require 'pry'
+# require 'pry'
 
 # using SendGrid's Ruby Library
 # https://github.com/sendgrid/sendgrid-ruby
