@@ -14,7 +14,8 @@
 	  <td><%= @goods_information[record.goods_id.to_i-1].goods_name %></td> 
 	  <td><%= record.goods_expire_date %></td> 
 	  <td><%= record.goods_quantity %></td> 
-	  <% if current_user.id == record.user_id %>
+
+	  <% if goods_owner?(current_user.id,record.id) %>
 	  <td>
 			<form action="/delete_food_record/<%= record.id %>" method="post">
 				<input type="hidden" name="_method" value="delete">

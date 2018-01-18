@@ -2,19 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Welcome to my fridge</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
   <link rel='stylesheet' href='/stylesheets/main.css'>
 </head>
 <body>
-	<% if logined_in? %>
-		<form action="/session" method="post">
-			Welcome <%= current_user.username %>!
-			<input type="hidden" name = "_method" value ="delete">
-			<button>signout</button>
-		</form>
-	<% end %>
-	<a href="/"><button>home</button></a>
-  <%= yield %>
+<nav id="navbar-example2" class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="#"><img src="/images/ic_launcher.png" width="30" height="30" class="d-inline-block align-top" alt="">Share Fridge · Enjoy Life</a>
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link" href="#fat">Dashboard</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#mdo">About us</a>
+    </li>
 
+	<% if logined_in? %>
+    <li class="nav-item">
+			<form action="/session" method="post">
+				<!-- Welcome <%= current_user.username %>! -->
+				<input type="hidden" name = "_method" value ="delete">
+				<button>Sign Out</button>
+			</form>
+    </li>
+	<% end %>
+  </ul>
+</nav>	
+
+	<a href="/"><button>home</button></a>
+
+  <%= yield %>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
 </body>
 </html>

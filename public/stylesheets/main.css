@@ -1,3 +1,8 @@
-table, th, td {
-    border: 1px solid black;
+body{
+	background-image: url('/images/background.jpg');
+  background-size: cover;
 }
+table, th, td {
+  border: 1px solid black;
+}
+

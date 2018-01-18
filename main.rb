@@ -32,28 +32,16 @@ helpers do
 	def right_user?(fridge_id)
 		# find out who own this fridge
 		return user_id_arr = !(FridgeUserRelationship.where(["fridge_id = ?", fridge_id.to_s]).where(relationship: ["0", "1"]).empty?)
-		# flag = false
-		# user_id_arr.each{|user|
-		# 	if user.user_id.to_s == current_user.id.to_s
-		# 		flag = true
-		# 		break
-		# 	end
-		# }
 
-		# if current_user && flag
-		# 	return true
-		# else
-		# 	return false
-		# end
 	end
 
-	# def owner?(user_id,fridge_id)
-	# 	if Fridge.where(id: fridge_id.to_i).where(owner_id: user_id.to_i).empty?
-	# 		return false
-	# 	else
-	# 		return true
-	# 	end
-	# end
+	def goods_owner?(user_id,goods_id)
+		if GoodsStore.where(id: goods_id.to_i).where(user_id: user_id.to_i).empty?
+			return false
+		else
+			return true
+		end
+	end
 
 	def fridge_is_empty?(fridge_id)
 		fridge = GoodsStore.find_by(fridge_id: fridge_id.to_s)
