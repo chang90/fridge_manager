@@ -31,7 +31,7 @@ helpers do
 
 	def right_user?(fridge_id)
 		# find out who own this fridge
-		return user_id_arr = FridgeUserRelationship.where(["fridge_id = ?", fridge_id.to_s]).where(relationship: ["0", "1"]).empty?
+		return user_id_arr = !(FridgeUserRelationship.where(["fridge_id = ?", fridge_id.to_s]).where(relationship: ["0", "1"]).empty?)
 		# flag = false
 		# user_id_arr.each{|user|
 		# 	if user.user_id.to_s == current_user.id.to_s
@@ -159,23 +159,23 @@ post '/fridges/:id/share' do
 		add_sharer = FridgeUserRelationship.new
 		add_sharer.fridge_id = @fridge_id
 		add_sharer.user_id = sharer.id
-		add_sharer.relationship = 2 # pending
-		# add_sharer.relationship = 1 # sharer
+		# add_sharer.relationship = 2 # pending
+		add_sharer.relationship = 1 # sharer
 		add_sharer.save
 
-		from = Email.new(email: 'hiby.90hou@gmail.com')
-		to = Email.new(email: params[:email])
-		subject = "#{current_user.username} invite you to share fridge"
-		content = Content.new(type: 'text/html', value: 
-			"<p>Your had been added to #{current_user.username}'s list.</p>
-			 <p>Click <a href='http://localhost:4567/confirm/#{add_sharer.id}'><button>this button</button></a> to confirm.</p>")
-		mail = Mail.new(from, subject, to, content)
+		# from = Email.new(email: 'hiby.90hou@gmail.com')
+		# to = Email.new(email: params[:email])
+		# subject = "#{current_user.username} invite you to share fridge"
+		# content = Content.new(type: 'text/html', value: 
+		# 	"<p>Your had been added to #{current_user.username}'s list.</p>
+		# 	 <p>Click <a href='http://localhost:4567/confirm/#{add_sharer.id}'><button>this button</button></a> to confirm.</p>")
+		# mail = Mail.new(from, subject, to, content)
 
-		sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
-		response = sg.client.mail._('send').post(request_body: mail.to_json)
-		puts response.status_code
-		puts response.body
-		puts response.headers
+		# sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
+		# response = sg.client.mail._('send').post(request_body: mail.to_json)
+		# puts response.status_code
+		# puts response.body
+		# puts response.headers
 
 	else
 		redirect "/fridges/#{@fridge_id}/share"
