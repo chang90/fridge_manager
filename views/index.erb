@@ -1,0 +1,65 @@
+<h1>Whelcome to fridge management</h1>
+<% if current_user %>
+	<h1>Hello, <%= current_user["username"] %></h1>
+	<h2>Here is your own fridge list</h2>
+	<table>
+	  <tr>
+	    <th>fridge_id</th>
+	    <th>fridge_name</th> 
+	    <th>fridge_location</th> 
+	    <th>share to others</th>
+	    <th>open the fridge</th>
+	    <th>remove the fridge</th>
+	  </tr>
+	  <% @own_fridge_detail_list.each{|fridge| %>
+	  <tr>
+	    <td><%= fridge.id %></td>
+	    <td><%= fridge.fridge_name %></td> 
+	    <td><%= fridge.fridge_location %></td> 
+	    <td>
+	    	<form action="/fridges/<%= fridge.id %>/share">
+					<button>share</button>
+				</form>
+	    </td>
+	    <td><a href="/fridges/<%= fridge.id %>">open</a></td> 
+	    <% if fridge_is_empty?(fridge.id)%>
+	    <td>
+	    	<form action="/delete_fridge/<%= fridge.id %>" method="post">
+					<input type="hidden" name="_method" value="delete">
+					<button>delete</button>
+				</form>
+			</td>
+			<% end %>
+	  </tr>
+		<% } %>
+
+	</table>
+	<a href="fridges/new">add fridge</a>
+
+		<h2>Here is your share fridge list</h2>
+	<table>
+	  <tr>
+	    <th>fridge_id</th>
+	    <th>fridge_name</th> 
+	    <th>fridge_location</th> 
+	    <th>open the fridge</th>
+	  </tr>
+	  <% @share_fridge_detail_list.each{|fridge| %>
+	  <tr>
+	    <td><%= fridge.id %></td>
+	    <td><%= fridge.fridge_name %></td> 
+	    <td><%= fridge.fridge_location %></td> 
+	    <td><a href="/fridges/<%= fridge.id %>">open</a></td> 
+	  </tr>
+		<% } %>
+
+	</table>
+
+<% else %>
+	<form action="/session" method="POST">
+		<p>EMAIL: <input type="text" name="email"></p>
+		<p>PASSWORD: <input type="password" name="password"></p>
+		<button>LOGIN</button>
+		<a href="/users/new">SIGNUP</a>
+	</form>
+<% end %>
