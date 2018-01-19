@@ -20,9 +20,9 @@ I am a house wife who lives in a big house and has many children, so I have many
 * Heroku -- hoster
 
 ## The approach taken
-1. Make a simple UX design to make sure the user can login, manage fridge and the item in this fridge.
+1. Make a simple UX wireframes design to make sure the user can login, manage fridge and the item in this fridge.
 
-2. Create wireframes base on my UX design.
+2. Create [database design draft](https://github.com/hiby90hou/fridge_manager/blob/master/database_design.jpg?raw=true) base on my UX design.
 
 3. Create a user management system base on a database table called users, which can sign up and sign in user.
 
