@@ -38,6 +38,7 @@ $ git clone https://github.com/hiby90hou/fridge_manager.git
 ```
 
 2. Create a database called "fridge_db" in psql and init 5 tables in it
+
 Terminal:
 ```
 $ psql

@@ -48,3 +48,43 @@ CREATE TABLE goods_stores (
 	FOREIGN KEY (goods_id) REFERENCES goods_infos(id) ON DELETE RESTRICT,
 	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT
 );
+
+INSERT INTO goods_infos (	
+	goods_name,	
+	goods_barcode,
+	recommend_expire_period,
+	category,
+	brand,
+	description,
+	image_url,
+	features,
+	goods_attributes) VALUES (
+	'12 pack 355 mL cans of Vanilla Coke',
+	'EAN 0049776369867',
+	365,
+	'drink',
+	'Coke',
+	'12 cans of vanilla coke',
+	'https://images-na.ssl-images-amazon.com/images/I/21gfuf%2B8-mL.jpg',
+	'heavy',
+	'{"Length"=>"0.4","Weight"=>"4.65 lbs"}');
+
+	INSERT INTO goods_infos (	
+	goods_name,	
+	goods_barcode,
+	recommend_expire_period,
+	category,
+	brand,
+	description,
+	image_url,
+	features,
+	goods_attributes) VALUES(	
+	'Kraft Natural Cheese Finely Shredded Mozzarella Cheese, 8 oz',	
+	'EAN 0021000638673',
+	30,
+	'dairy',
+	'Kraft Foods Cheese & Dairy',
+	'Low-moisture part-skim mozzarella cheese.',
+	'https://images-na.ssl-images-amazon.com/images/I/51aZ3bsynUL.jpg',
+	'keep freezing',
+	'{"Length"=> "1","Width" => "6.5","Height:"=> "8.75","Weight"=>"599 lbs"}');
