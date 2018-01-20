@@ -32,7 +32,6 @@ helpers do
 	def right_user?(fridge_id)
 		# find out who own this fridge
 		return user_id_arr = !(FridgeUserRelationship.where(["fridge_id = ?", fridge_id.to_s]).where(relationship: ["0", "1"]).empty?)
-
 	end
 
 	def goods_owner?(user_id,goods_id)
@@ -46,6 +45,15 @@ helpers do
 	def fridge_is_empty?(fridge_id)
 		fridge = GoodsStore.find_by(fridge_id: fridge_id.to_s)
 		return !fridge
+	end
+
+	def get_user_name(user_id)
+		user_name = User.find_by(id: user_id)
+		return user_name.username
+	end
+
+	def today
+		today = Time.now.strftime('%Y-%m-%d')
 	end
 end
 

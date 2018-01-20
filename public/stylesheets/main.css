@@ -4,6 +4,7 @@
 body{
 }
 
+
 .background{
   position: fixed;
   width: 100vw;
@@ -44,15 +45,19 @@ a:hover{
 }
 
 .container{
+  display: flex;
+  flex-direction: column;
   width: auto;
+  max-width: 90%;
   background-color: white;
   border-radius: 30px;
   padding: 2% 5% 2% 5%;
   box-shadow: 10px 10px 5px rgba(0,0,0,0.2);
-  margin-bottom: 5%;
+  /*margin-bottom: 5%;*/
+  margin-bottom: 150px;
 }
 
-.dashboard{
+.dashboard p{
   text-align: center;
 }
 
@@ -86,4 +91,8 @@ form{
 
 .container form{
   text-align: center;
+}
+
+select{
+  max-width: 100px;
 }
