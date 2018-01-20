@@ -1,4 +1,4 @@
-# require 'pry'
+require 'pry'
 require_relative 'db_config'
 # require 'sendgrid-ruby'
 # include SendGrid
@@ -21,4 +21,4 @@ require_relative 'models/goods_info'
 # puts response.body
 # puts response.headers
 
-# binding.pry
+binding.pry

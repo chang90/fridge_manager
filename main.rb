@@ -29,7 +29,7 @@ helpers do
 		end
 	end
 
-	def right_user?(fridge_id)
+	def fridge_owner?(fridge_id)
 		# find out who own this fridge
 		return user_id_arr = !(FridgeUserRelationship.where(["fridge_id = ?", fridge_id.to_s]).where(relationship: ["0", "1"]).empty?)
 	end
@@ -55,29 +55,41 @@ helpers do
 	def today
 		today = Time.now.strftime('%Y-%m-%d')
 	end
+
+	def own_fridge_list(user_id)
+		return own_fridge_detail_list = Fridge.joins(:fridge_user_relationships).where("fridge_user_relationships.relationship = ? and fridge_user_relationships.user_id = ?","0",user_id)
+	end
+
+	def share_fridge_list(user_id)
+		return share_fridge_detail_list = Fridge.joins(:fridge_user_relationships).where("fridge_user_relationships.relationship = ? and fridge_user_relationships.user_id = ?","1",user_id)
+	end
 end
 
 get '/' do
 
 	if logined_in?
-		own_fridge_list = FridgeUserRelationship.where(user_id: current_user.id).where(relationship: 0)
+		# own_fridge_list = FridgeUserRelationship.where(user_id: current_user.id).where(relationship: 0)
 		
-		@own_fridge_detail_list = []
-		own_fridge_list.each { |record|
-			fridge = Fridge.find_by(id: record.fridge_id.to_s)
-			if fridge
-				@own_fridge_detail_list.push(fridge)
-			end
-		}
+		# @own_fridge_detail_list = []
+		# own_fridge_list.each { |record|
+		# 	fridge = Fridge.find_by(id: record.fridge_id.to_s)
+		# 	if fridge
+		# 		@own_fridge_detail_list.push(fridge)
+		# 	end
+		# }
+		@own_fridge_detail_list = own_fridge_list(current_user.id)
+		@share_fridge_detail_list = share_fridge_list(current_user.id)
 
-		@share_fridge_detail_list = []
-		share_list = FridgeUserRelationship.where(["user_id = ? and relationship = ?", current_user.id.to_s, "1"])
-		share_list.each { |record|
-			fridge = Fridge.find_by(id: record.fridge_id.to_s)
-			if fridge
-				@share_fridge_detail_list.push(fridge)
-			end
-		}
+
+		# @share_fridge_detail_list = []
+		# share_list = FridgeUserRelationship.where(["user_id = ? and relationship = ?", current_user.id.to_s, "1"])
+		# share_list.each { |record|
+		# 	fridge = Fridge.find_by(id: record.fridge_id.to_s)
+		# 	if fridge
+		# 		@share_fridge_detail_list.push(fridge)
+		# 	end
+		# }
+
 		# return @fridge_detail_list.to_json
 	end
 
@@ -181,7 +193,7 @@ post '/fridges/:id/share' do
 end
 
 get '/fridges/:id' do
-	if logined_in? && right_user?(params[:id])
+	if logined_in? && fridge_owner?(params[:id])
 		@record_list = GoodsStore.where(["fridge_id = ?", params[:id].to_i])
 		@fridge_id = params[:id]
 		@goods_information = GoodsInfo.all

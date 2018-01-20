@@ -7,7 +7,6 @@
 		<table class="table text-center">
 			<thead class="thead-light ">
 			  <tr>
-			    <th scope="col">fridge id</th>
 			    <th scope="col">fridge name</th> 
 			    <th scope="col">fridge location</th> 
 			    <th scope="col">share to others</th>
@@ -18,7 +17,6 @@
 			<tbody>
 			  <% @own_fridge_detail_list.each{|fridge| %>
 			  <tr>
-			    <th scope="row"><%= fridge.id %></th>
 			    <td><%= fridge.fridge_name %></td> 
 			    <td><%= fridge.fridge_location %></td> 
 			    <td>
@@ -48,10 +46,9 @@
 
 	<h2>Here is your share fridge list</h2>
 	<div class="table-responsive">
-		<table class="table">
+		<table class="table text-center">
 			<thead class="thead-light ">
 			  <tr>
-			    <th scope="col">fridge_id</th>
 			    <th scope="col">fridge_name</th> 
 			    <th scope="col">fridge_location</th> 
 			    <th scope="col">open the fridge</th>
@@ -60,7 +57,6 @@
 			<tbody>
 			  <% @share_fridge_detail_list.each{|fridge| %>
 			  <tr>
-			    <td scope="col"><%= fridge.id %></td>
 			    <td><%= fridge.fridge_name %></td> 
 			    <td><%= fridge.fridge_location %></td> 
 			    <td><a href="/fridges/<%= fridge.id %>"><button class="btn btn-primary">open</button></a></td> 
