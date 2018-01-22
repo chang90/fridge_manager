@@ -63,34 +63,22 @@ helpers do
 	def share_fridge_list(user_id)
 		return share_fridge_detail_list = Fridge.joins(:fridge_user_relationships).where("fridge_user_relationships.relationship = ? and fridge_user_relationships.user_id = ?","1",user_id)
 	end
+
+	def signup_alert(alert_name)
+		alert_arr = 
+		{"password_nomatch"=>"Please input same password in password and password confirmation",
+		"password_short"=>"Please input at least 6 letters in password",
+		"email-wrong"=>"Please input a valid email address"
+		}
+		return alert_arr[alert_name]
+	end
 end
 
 get '/' do
 
 	if logined_in?
-		# own_fridge_list = FridgeUserRelationship.where(user_id: current_user.id).where(relationship: 0)
-		
-		# @own_fridge_detail_list = []
-		# own_fridge_list.each { |record|
-		# 	fridge = Fridge.find_by(id: record.fridge_id.to_s)
-		# 	if fridge
-		# 		@own_fridge_detail_list.push(fridge)
-		# 	end
-		# }
 		@own_fridge_detail_list = own_fridge_list(current_user.id)
 		@share_fridge_detail_list = share_fridge_list(current_user.id)
-
-
-		# @share_fridge_detail_list = []
-		# share_list = FridgeUserRelationship.where(["user_id = ? and relationship = ?", current_user.id.to_s, "1"])
-		# share_list.each { |record|
-		# 	fridge = Fridge.find_by(id: record.fridge_id.to_s)
-		# 	if fridge
-		# 		@share_fridge_detail_list.push(fridge)
-		# 	end
-		# }
-
-		# return @fridge_detail_list.to_json
 	end
 
   erb :index
@@ -111,7 +99,7 @@ post '/users' do
 
 		redirect "/users/#{user.id}"
 	else
-		redirect '/users/new?alert_info=Please input same password in password and password confirmation'
+		redirect '/users/new?alert_info='
 	end
 end
 
@@ -194,9 +182,12 @@ end
 
 get '/fridges/:id' do
 	if logined_in? && fridge_owner?(params[:id])
-		@record_list = GoodsStore.where(["fridge_id = ?", params[:id].to_i])
-		@fridge_id = params[:id]
+		# @record_list = GoodsStore.where(["fridge_id = ?", params[:id].to_i])
+		# @fridge_id = params[:id]
 		@goods_information = GoodsInfo.all
+
+		# @record_list = GoodsInfo.joins(:goods_stores).where(["goods_stores.fridge_id = ?",params[:id]])
+		@record_list = GoodsStore.includes(:goods_info).where(["goods_stores.fridge_id = ?",params[:id]])
 
 		erb :food_list
 	else
@@ -231,7 +222,7 @@ post '/add_food_item' do
 	store_record = GoodsStore.new
 	store_record.user_id = params[:user_id]
 	store_record.fridge_id = params[:fridge_id]
-	store_record.goods_id = params[:goods_id]
+	store_record.goods_info_id = params[:goods_id]
 	store_record.goods_expire_date = params[:goods_expire_date]
 	store_record.goods_quantity = params[:goods_quantity]
 	store_record.save
