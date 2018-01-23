@@ -34,8 +34,8 @@ helpers do
 		return user_id_arr = !(FridgeUserRelationship.where(["fridge_id = ?", fridge_id.to_s]).where(relationship: ["0", "1"]).empty?)
 	end
 
-	def goods_owner?(user_id,goods_id)
-		if GoodsStore.where(id: goods_id.to_i).where(user_id: user_id.to_i).empty?
+	def goods_owner?(user_id,goods_info_id)
+		if GoodsStore.where(id: goods_info_id.to_i).where(user_id: user_id.to_i).empty?
 			return false
 		else
 			return true
@@ -65,13 +65,14 @@ helpers do
 	end
 
 	def signup_alert(alert_name)
-		alert_arr = 
-		{"password_nomatch"=>"Please input same password in password and password confirmation",
+		alert_arr = {
+		"password_nomatch"=>"Please input same password in password and password confirmation",
 		"password_short"=>"Please input at least 6 letters in password",
 		"email-wrong"=>"Please input a valid email address"
 		}
 		return alert_arr[alert_name]
 	end
+	
 end
 
 get '/' do
@@ -252,7 +253,7 @@ end
 put '/change_food_record/:id' do
 	@single_record = GoodsStore.find_by(id: params[:id])
 	# return @single_record.to_json
-	@single_record.goods_id = params[:goods_id]
+	@single_record.goods_info_id = params[:goods_info_id]
 	@single_record.goods_expire_date = params[:goods_expire_date]
 	@single_record.goods_quantity = params[:goods_quantity]
 	@single_record.save
