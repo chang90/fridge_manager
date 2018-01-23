@@ -90,16 +90,21 @@ get '/users/new' do
 end
 
 post '/users' do
-	if params[:password] == params[:password_confirmation]
+	if params[:password] != params[:password_confirmation]
+		redirect "/users/new?alert_info=#{signup_alert("password_nomatch")}"
+	elsif params[:password].length < 6
+		redirect "/users/new?alert_info=#{signup_alert("password_short")}"
+	elsif (!!User.find_by(email:params[:email]))
+		redirect "/users/new?alert_info=#{signup_alert("email-wrong")}"
+	else	
 		user = User.new
 		user.username = params[:username]
 		user.email = params[:email]
 		user.password = params[:password]
 		user.save
+		session[:user_id] = user.id
 
 		redirect "/users/#{user.id}"
-	else
-		redirect '/users/new?alert_info='
 	end
 end
 
