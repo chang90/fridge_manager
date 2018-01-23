@@ -189,7 +189,7 @@ end
 get '/fridges/:id' do
 	if logined_in? && fridge_owner?(params[:id])
 		# @record_list = GoodsStore.where(["fridge_id = ?", params[:id].to_i])
-		# @fridge_id = params[:id]
+		@fridge_id = params[:id]
 		@goods_information = GoodsInfo.all
 
 		# @record_list = GoodsInfo.joins(:goods_stores).where(["goods_stores.fridge_id = ?",params[:id]])
