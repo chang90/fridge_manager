@@ -15,6 +15,19 @@
 	    <li class="nav-item">
 	      <a class="nav-link" href="/">Dashboard</a>
 	    </li>
+
+		<% if is_food_list_page? %>
+			<li class="nav-item dropdown">
+				 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Sort</a>
+      	<div class="dropdown-menu">
+	        <a class="dropdown-item" href="/fridges/<%= @fridge_id %>?sort=by_expire_date">Sort by expire date</a>
+	        <a class="dropdown-item" href="/fridges/<%= @fridge_id %>">Sort by input date</a>
+	        <div role="separator" class="dropdown-divider"></div>
+	        <a class="dropdown-item" href="/fridges/<%= @fridge_id %>?sort=by_user">Sort by user</a>
+      	</div>
+			</li>
+		<% end %>
+
 		<% if logined_in? %>
 	    <li class="nav-item">
 				<form action="/session" method="post">
@@ -24,6 +37,7 @@
 				</form>
 	    </li>
 		<% end %>
+
 	  </ul>
 	</nav>	
 

@@ -73,6 +73,9 @@ helpers do
 		return alert_arr[alert_name]
 	end
 	
+	def is_food_list_page?
+		return !!(request.path_info =~ /\/fridges\/(.*)/)
+	end
 end
 
 get '/' do
@@ -191,10 +194,13 @@ get '/fridges/:id' do
 		# @record_list = GoodsStore.where(["fridge_id = ?", params[:id].to_i])
 		@fridge_id = params[:id]
 		@goods_information = GoodsInfo.all
-
-		# @record_list = GoodsInfo.joins(:goods_stores).where(["goods_stores.fridge_id = ?",params[:id]])
 		@record_list = GoodsStore.includes(:goods_info).where(["goods_stores.fridge_id = ?",params[:id]])
 
+		if params[:sort] == "by_expire_date"
+			@record_list = @record_list.sort_by {|record| record.goods_expire_date}
+		elsif params[:sort] == "by_user"
+			
+		end 
 		erb :food_list
 	else
 		redirect '/'
