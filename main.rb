@@ -56,6 +56,10 @@ helpers do
 		today = Time.now.strftime('%Y-%m-%d')
 	end
 
+	def guess_expire_date(expire_period)
+		guess_expire_date = (Time.now + 3600 * 24 * (expire_period).to_i).strftime('%Y-%m-%d')
+	end
+
 	def own_fridge_list(user_id)
 		return own_fridge_detail_list = Fridge.joins(:fridge_user_relationships).where("fridge_user_relationships.relationship = ? and fridge_user_relationships.user_id = ?","0",user_id)
 	end
@@ -193,6 +197,7 @@ get '/fridges/:id' do
 	if logined_in? && fridge_owner?(params[:id])
 		# @record_list = GoodsStore.where(["fridge_id = ?", params[:id].to_i])
 		@fridge_id = params[:id]
+		@fridge_name = Fridge.find_by(id: @fridge_id).fridge_name
 		@goods_information = GoodsInfo.all
 		@record_list = GoodsStore.includes(:goods_info).where(["goods_stores.fridge_id = ?",params[:id]])
 
@@ -215,7 +220,6 @@ post '/fridges' do
   fridge = Fridge.new
   fridge.fridge_name = params[:fridge_name]
   fridge.fridge_location = params[:fridge_location]
-  fridge.owner_id = current_user.id
 	fridge.save
 
 	fridge_user_re = FridgeUserRelationship.new
@@ -268,5 +272,16 @@ put '/change_food_record/:id' do
 	@single_record.goods_quantity = params[:goods_quantity]
 	@single_record.save
 	redirect "/fridges/#{params[:fridge_id]}"
-	end
+end
 
+put '/change_share_state/:id' do
+	@single_record = GoodsStore.find_by(id: params[:id])
+	@single_record.goods_share_state = !@single_record.goods_share_state
+	@single_record.save
+	redirect "/fridges/#{params[:fridge_id]}"
+end
+
+get '/ajax/expire_date' do
+	expire_period = GoodsInfo.find_by(id: params[:goods_id]).recommend_expire_period
+	return guess_expire_date(expire_period)
+end

@@ -15,8 +15,8 @@ CREATE TABLE fridges (
 
 CREATE TABLE fridge_user_relationships (
 	id SERIAL PRIMARY KEY,
-	fridge_id int,
-	user_id int,
+	fridge_id INT,
+	user_id INT,
 	relationship INT,
 	FOREIGN KEY (fridge_id) REFERENCES fridges(id) ON DELETE CASCADE,
 	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT
@@ -42,9 +42,10 @@ CREATE TABLE goods_stores (
 	fridge_id INTEGER NOT NULL,
 	goods_info_id INTEGER NOT NULL,
 	goods_expire_date VARCHAR(255),
-	goods_quantity INT,
+	goods_quantity INTEGER DEFAULT 1,
+	goods_share_state BOOLEAN DEFAULT FALSE,
 	FOREIGN KEY (fridge_id) REFERENCES fridges(id) ON DELETE CASCADE,
-	FOREIGN KEY (goods_id) REFERENCES goods_infos(id) ON DELETE RESTRICT,
+	FOREIGN KEY (goods_info_id) REFERENCES goods_infos(id) ON DELETE RESTRICT,
 	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT
 );
 
