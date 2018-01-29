@@ -199,7 +199,7 @@ get '/fridges/:id' do
 		@fridge_id = params[:id]
 		@fridge_name = Fridge.find_by(id: @fridge_id).fridge_name
 		@goods_information = GoodsInfo.all
-		@record_list = GoodsStore.includes(:goods_info).where(["goods_stores.fridge_id = ?",params[:id]])
+		@record_list = GoodsStore.includes(:goods_info).where(["goods_stores.fridge_id = ?",params[:id]]).sort_by {|record| record.id}
 
 		if params[:sort] == "by_expire_date"
 			@record_list = @record_list.sort_by {|record| record.goods_expire_date}
