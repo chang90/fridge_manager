@@ -1,6 +1,6 @@
 require 'sinatra'
-# require 'sinatra/reloader'
-# require 'pry'
+require 'sinatra/reloader'
+require 'pry'
 
 # using SendGrid's Ruby Library
 # https://github.com/sendgrid/sendgrid-ruby
@@ -199,7 +199,11 @@ get '/fridges/:id' do
 		if params[:sort] == "by_expire_date"
 			@record_list = @record_list.sort_by {|record| record.goods_expire_date}
 		elsif params[:sort] == "by_user"
-			
+			record_self_list = @record_list.where(user_id: current_user.id)
+			record_last_list = @record_list.where.not(user_id: current_user.id).sort_by {|record| record.user_id}
+			# binding.pry
+			@record_list = record_self_list + record_last_list
+
 		end 
 		erb :food_list
 	else
