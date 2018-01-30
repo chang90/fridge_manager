@@ -118,10 +118,18 @@ end
 
 get "/confirm/:id" do
 
+	# clean all kinds of expired record in FridgeUserRelationship table
+	expired_record = FridgeUserRelationship.where(relationship: '2').where(["request_expire_date < ?",Time.now.strftime('%Y-%m-%d')])
+	FridgeUserRelationship.delete(expired_record)
+
 	change_state = FridgeUserRelationship.find_by(id: params[:id])
-	change_state.relationship = 1 # sharer
-	change_state.save
-	redirect '/'
+	if change_state
+		change_state.relationship = 1 # sharer
+		change_state.save
+		redirect '/'
+	else
+		erb :confirm_error
+	end
 end
 
 get '/users/:id' do
@@ -157,6 +165,10 @@ end
 
 get '/fridges/:id/share' do
 	@fridge_id = params[:id]
+	@alert = nil
+	if params[:info] == 'msg_already_send'
+		@alert = "Your request is already send, please do not send again within 24 hours!"
+	end
 	# return 'share'
 	erb :new_sharer
 end
@@ -165,26 +177,36 @@ post '/fridges/:id/share' do
 	@fridge_id = params[:id]
 	sharer = User.find_by(email: params[:email])
 	if sharer && sharer.id != current_user.id then
+
+		if FridgeUserRelationship.where(["fridge_id = ? and user_id = ?", @fridge_id, "1"]).where.not(relationship: '0').length > 0
+			redirect "/fridges/#{@fridge_id}/share?info=msg_already_send"
+			return
+		end
+
 		add_sharer = FridgeUserRelationship.new
 		add_sharer.fridge_id = @fridge_id
 		add_sharer.user_id = sharer.id
-		# add_sharer.relationship = 2 # pending
-		add_sharer.relationship = 1 # sharer
+		add_sharer.relationship = 2 # pending
+		# add_sharer.relationship = 1 # sharer
+		add_sharer.request_expire_date = (Time.now + 3600 * 24).strftime('%Y-%m-%d')
 		add_sharer.save
 
-		# from = Email.new(email: 'hiby.90hou@gmail.com')
-		# to = Email.new(email: params[:email])
-		# subject = "#{current_user.username} invite you to share fridge"
-		# content = Content.new(type: 'text/html', value: 
-		# 	"<p>Your had been added to #{current_user.username}'s list.</p>
-		# 	 <p>Click <a href='http://localhost:4567/confirm/#{add_sharer.id}'><button>this button</button></a> to confirm.</p>")
-		# mail = Mail.new(from, subject, to, content)
+		# send email
+		fridge_name = Fridge.find_by(id: @fridge_id).fridge_name
+		from = Email.new(email: 'hiby.90hou@gmail.com')
+		to = Email.new(email: params[:email])
+		subject = "#{current_user.username} invite you to share fridge"
+		content = Content.new(type: 'text/html', value: 
+			"<p>Your had been added to #{current_user.username}'s fridge #{fridge_name}.</p>
+			 <p>Click <a href='http://localhost:4567/confirm/#{add_sharer.id}'><button>this button</button></a> to confirm.</p>
+			 <p>note: this link will be expired after 24 hours.</p>")
+		mail = Mail.new(from, subject, to, content)
 
-		# sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
-		# response = sg.client.mail._('send').post(request_body: mail.to_json)
-		# puts response.status_code
-		# puts response.body
-		# puts response.headers
+		sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
+		response = sg.client.mail._('send').post(request_body: mail.to_json)
+		puts response.status_code
+		puts response.body
+		puts response.headers
 
 	else
 		redirect "/fridges/#{@fridge_id}/share"

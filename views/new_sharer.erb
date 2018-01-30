@@ -1,4 +1,7 @@
 <form action="/fridges/<%= @fridge_id %>/share" method="POST">
+	<% if @alert %>
+	<p><%= @alert %></p>
+	<% end %>
 	<p>New sharer's email: <input type="text" name="email"></p>
 	<button class="btn btn-secondary">add sharer</button>
 </form>

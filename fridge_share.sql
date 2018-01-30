@@ -18,6 +18,7 @@ CREATE TABLE fridge_user_relationships (
 	fridge_id INT,
 	user_id INT,
 	relationship INT,
+	request_expire_date VARCHAR(255),
 	FOREIGN KEY (fridge_id) REFERENCES fridges(id) ON DELETE CASCADE,
 	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT
 );
