@@ -48,7 +48,7 @@ function loadXMLDoc()
 			  <td><%= record.id %></td>
 			  <td><%= get_user_name(record.user_id) %></td> 
 			  <td><%= record.goods_info.goods_name %></td> 
-			  <td><%= record.goods_expire_date %></td> 
+			  <td class="goodsExpireDate"><%= record.goods_expire_date %></td> 
 			  <td><%= record.goods_quantity %></td> 
 
 			  <% if (goods_owner?(current_user.id,record.id)||record.goods_share_state) %>
@@ -107,3 +107,38 @@ function loadXMLDoc()
 		<button class="btn btn-success">input</button>
 	</form>
 </div>
+
+<script type="text/javascript">
+
+	function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+	}
+
+	expireDateArr = document.querySelectorAll(".goodsExpireDate")
+	var imergencyDate = new Date();
+	imergencyDate.setDate(imergencyDate.getDate() + 3);
+	console.log("imergencyDate"+formatDate(imergencyDate));
+
+	expireDateArr.forEach(function(expireDate){
+		console.log(expireDate.innerHTML);
+
+		if(new Date(expireDate.innerHTML) < imergencyDate){
+			console.log(formatDate(imergencyDate)+"red");
+			expireDate.style.color="red";
+		}
+
+		if(expireDate.innerHTML < formatDate(new Date())){
+			expireDate.style.color="gray";
+			expireDate.style.textDecoration="line-through";
+
+		}
+	})
+</script>
