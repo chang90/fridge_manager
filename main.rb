@@ -198,7 +198,7 @@ post '/fridges/:id/share' do
 		subject = "#{current_user.username} invite you to share fridge"
 		content = Content.new(type: 'text/html', value: 
 			"<p>Your had been added to #{current_user.username}'s fridge #{fridge_name}.</p>
-			 <p>Click <a href='http://localhost:4567/confirm/#{add_sharer.id}'><button>this button</button></a> to confirm.</p>
+			 <p>Click <a href='https://cryptic-ocean-77629.herokuapp.com/confirm/#{add_sharer.id}'><button>this button</button></a> to confirm.</p>
 			 <p>note: this link will be expired after 24 hours.</p>")
 		mail = Mail.new(from, subject, to, content)
 
