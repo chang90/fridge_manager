@@ -125,10 +125,10 @@ function loadXMLDoc()
 	expireDateArr = document.querySelectorAll(".goodsExpireDate")
 	var imergencyDate = new Date();
 	imergencyDate.setDate(imergencyDate.getDate() + 3);
-	console.log("imergencyDate"+formatDate(imergencyDate));
+	// console.log("imergencyDate"+formatDate(imergencyDate));
 
 	expireDateArr.forEach(function(expireDate){
-		console.log(expireDate.innerHTML);
+		// console.log(expireDate.innerHTML);
 
 		if(new Date(expireDate.innerHTML) < imergencyDate){
 			console.log(formatDate(imergencyDate)+"red");
