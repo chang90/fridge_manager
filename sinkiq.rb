@@ -27,19 +27,19 @@ class SchedulePerMinuteWorker
   include Sidekiq::Worker
 
   def perform
-    # 清除重复的任务计划
+    # clear repeatable task plan, in case there are some in the pass
     Sidekiq::ScheduledSet.new.select {|job| job.klass == self.class.name }.each(&:delete)
 
     run_schedule_works
 
-    # 结束时将自己推入
+    # when finish, give tomorrow's task
     SchedulePerMinuteWorker.perform_in(60*60*24)
   end
 
-  # 每分钟执行的任务
+  # everyday run 1 times
   def run_schedule_works
-    # TODO 业务逻辑
-    puts "repeat"
+    # TODO list
+    puts "send email"
     user_list = User.includes(:goods_stores).where('goods_stores.goods_expire_date < ?', Time.now.strftime("%Y-%m-%d")).references(:goods_stores)
 
 
@@ -53,13 +53,11 @@ class SchedulePerMinuteWorker
       email_content += "<p>Hello #{user.username}</p>"
       email_content += "<p>The following item in your fridge is expired</p>"
       email_content += "<ul>"
-      # puts "Hello #{user.username}"
-      # puts "The following item in your fridge is expired"
+
       user.goods_stores.each{|goods|
         email_content += "<li>food name: #{goods.goods_info.goods_name} food expire date: #{goods.goods_expire_date} fridge: #{goods.fridge.fridge_name}</li>"
-        # puts "food name: #{goods.goods_info.goods_name} food expire date: #{goods.goods_expire_date} "
-        # puts "fridge: #{goods.fridge.fridge_name}"
       }
+
       email_content += "</ul>"
       puts email_content
 
@@ -80,53 +78,3 @@ class SchedulePerMinuteWorker
 end
 
 SchedulePerMinuteWorker.perform_async
-
-# class SinatraWorker
-#   include Sidekiq::Worker
-
-#   def perform(msg="lulz you forgot a msg!")
-#     $redis.lpush("sinkiq-example-messages", msg)
-#   end
-# end
-
-# get '/' do
-#   stats = Sidekiq::Stats.new
-#   @failed = stats.failed
-#   @processed = stats.processed
-#   @messages = $redis.lrange('sinkiq-example-messages', 0, -1)
-#   erb :index
-# end
-
-# post '/msg' do
-#   SinatraWorker.perform_in(3, params[:msg])
-#   # SinatraWorker.perform_async params[:msg]
-#   redirect to('/')
-# end
-
-# __END__
-
-# @@ layout
-# <html>
-#   <head>
-#     <title>Sinatra + Sidekiq</title>
-#     <body>
-#       <%= yield %>
-#     </body>
-# </html>
-
-# @@ index
-#   <h1>Sinatra + Sidekiq Example</h1>
-#   <h2>Failed: <%= @failed %></h2>
-#   <h2>Processed: <%= @processed %></h2>
-
-#   <form method="post" action="/msg">
-#     <input type="text" name="msg">
-#     <input type="submit" value="Add Message">
-#   </form>
-
-#   <a href="/">Refresh page</a>
-
-#   <h3>Messages</h3>
-#   <% @messages.each do |msg| %>
-#     <p><%= msg %></p>
-#   <% end %>
