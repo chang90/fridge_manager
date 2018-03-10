@@ -11,7 +11,7 @@
 			    <th scope="col">fridge location</th> 
 			    <th scope="col">share to others</th>
 			    <th scope="col">open the fridge</th>
-			    <th scope="col">remove the fridge</th>
+			    <th scope="col" class="hidden-in-small">remove the fridge</th>
 			  </tr>
 			</thead>
 			<tbody>
@@ -26,14 +26,14 @@
 			    </td>
 			    <td><a href="/fridges/<%= fridge.id %>"><button class="btn btn-primary">open</button></a></td> 
 			    <% if fridge_is_empty?(fridge.id)%>
-			    <td>
+			    <td class="hidden-in-small">
 			    	<form action="/delete_fridge/<%= fridge.id %>" method="post">
 							<input type="hidden" name="_method" value="delete">
 							<button class="btn btn btn-warning">delete</button>
 						</form>
 					</td>
 					<% else%>
-					 <td>
+					 <td class="hidden-in-small">
 						<button class="btn btn-outline-dark" disabled>delete</button>
 					</td>
 					<% end %>

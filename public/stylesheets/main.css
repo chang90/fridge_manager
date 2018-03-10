@@ -96,3 +96,38 @@ form{
 select{
   max-width: 100px;
 }
+
+@media only screen and (max-width: 600px) {
+  html,body{
+    min-width: 100vw;
+    min-height: 100vh;
+  }
+  .bigContainer{
+    min-height: 100vh;
+    justify-content:center;
+    align-items: center;
+    position: absolute;
+  }
+  .container{
+    margin-bottom: 0;
+    padding: 5%;
+  }
+
+  h1,h2{
+    font-size: 1rem;
+  }
+
+  h3{
+    text-align: center;
+  }
+  th,td,.btn{
+    font-size: 0.7rem;
+  }
+  label{
+    text-align: left;
+    display: block;
+  }
+  .hidden-in-small{
+    display: none;
+  }
+}

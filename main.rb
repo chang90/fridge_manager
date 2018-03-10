@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'json'
 # require 'sinatra/reloader'
 # require 'pry'
 
@@ -307,3 +308,8 @@ get '/ajax/expire_date' do
 	expire_period = GoodsInfo.find_by(id: params[:goods_id]).recommend_expire_period
 	return guess_expire_date(expire_period)
 end
+
+# get '/api/' do
+# 	@own_fridge_detail_list = own_fridge_list(current_user.id)
+# 	@share_fridge_detail_list = share_fridge_list(current_user.id)
+# end

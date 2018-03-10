@@ -1,8 +1,5 @@
 # Make sure you have Sinatra installed, then start sidekiq with
-# ./bin/sidekiq -r ./examples/sinkiq.rb
-# Simply run Sinatra with
-# ruby examples/sinkiq.rb
-# and then browse to http://localhost:4567
+# sidekiq -r sinkiq.rb
 #
 require 'bundler/setup'
 require 'sinatra'

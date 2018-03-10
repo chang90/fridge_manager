@@ -31,8 +31,8 @@ function loadXMLDoc()
 	<table class="table text-center">
 		<thead class="thead-light ">
 			<tr>
-		    <th scope="col">food_id</th>
-		    <th scope="col">owner</th> 
+		    <th scope="col" class="hidden-in-small">food_id</th>
+		    <th scope="col" class="hidden-in-small">owner</th> 
 		    <th scope="col">food name</th> 
 		    <th scope="col">food expire date</th>
 		    <th scope="col">food quantity</th>
@@ -45,8 +45,8 @@ function loadXMLDoc()
 		<tbody>
 		<% @record_list.each{|record| %>
 			<tr>
-			  <td><%= record.id %></td>
-			  <td><%= get_user_name(record.user_id) %></td> 
+			  <td class="hidden-in-small"><%= record.id %></td>
+			  <td class="hidden-in-small"><%= get_user_name(record.user_id) %></td> 
 			  <td><%= record.goods_info.goods_name %></td> 
 			  <td class="goodsExpireDate"><%= record.goods_expire_date %></td> 
 			  <td><%= record.goods_quantity %></td> 
